@@ -7,8 +7,8 @@ const initialState = {
     priority: '',
     sortBy: 'title',
     isAscending: true,
-    page: 1, // default page
-    limit: 5, // default limit
+    page: 1,
+    limit: 5,
   },
 };
 
@@ -16,6 +16,7 @@ export function appReducer(state = initialState, action = {}) {
   switch (action.type) {
     case SET_FILTER_BY:
       return { ...state, filterBy: { ...state.filterBy, ...action.filterBy } };
+
     default:
       return state;
   }

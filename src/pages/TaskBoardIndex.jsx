@@ -1,11 +1,12 @@
 import { TaskList } from "../cmp/TaskList";
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getTasks, deleteTask } from '../services/asyncTaskService';
+import { getTasks, deleteTask } from '../services/task.service';
 import { useNavigate } from "react-router-dom";
 import { Loader } from "../assets/svg/Loader";
 import { TaskFilter } from "../cmp/TaskFilter";
 import { useState } from "react";
 import { useSelector } from 'react-redux';
+import { Pagination } from "../cmp/Pagination";
 
 export function TaskBoardIndex() {
     const navigate = useNavigate();
@@ -20,8 +21,9 @@ export function TaskBoardIndex() {
             page: currentPage,
             limit: filterBy.limit || 5, // Default to 5 if limit is not set
         }),
+        staleTime: 1000 * 60 * 5,
     });
-    
+
 
     const deleteTaskMutation = useMutation({
         mutationFn: deleteTask,
@@ -53,19 +55,13 @@ export function TaskBoardIndex() {
             <div>
                 <button onClick={() => navigate('/task/edit')}>Add Task</button>
                 <TaskList deleteTask={handleDeleteTask} tasks={tasksData.tasks} />
-                {/* Pagination controls */}
-                <div>
-                    {Array.from({ length: tasksData.totalPages }, (_, index) => (
-                        <button 
-                            key={index + 1} 
-                            onClick={() => handlePageChange(index + 1)}
-                            disabled={currentPage === index + 1}
-                        >
-                            {index + 1}
-                        </button>
-                    ))}
-                </div>
-            </div>
+                {tasksData.totalPages > 1 && (
+                    <Pagination
+                        tasksData={tasksData}
+                        currentPage={currentPage}
+                        handlePageChange={handlePageChange}
+                    />
+                )}            </div>
         </div>
     );
 }

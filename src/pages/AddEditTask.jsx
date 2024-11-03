@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { TextField, Button } from '@mui/material'
-import { getTaskById, createTask, updateTask } from '../services/asyncTaskService'
+import { getTaskById, createTask, updateTask } from '../services/task.service'
 import { Loader } from '../assets/svg/Loader'
 import { useEffect, useState } from 'react'
 

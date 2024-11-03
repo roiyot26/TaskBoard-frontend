@@ -1,6 +1,8 @@
-import { SET_FILTER_BY } from '../reducers/app.reducer';
-import { store } from '../store';
+import { SET_FILTER_BY } from '../reducers/app.reducer'
 
-export function setFilter(filterBy = {}) {
-  store.dispatch({ type: SET_FILTER_BY, filterBy });
+export function setFilter(filterBy) {
+  return {
+    type: SET_FILTER_BY,
+    filterBy,
+  }
 }

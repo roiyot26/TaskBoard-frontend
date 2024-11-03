@@ -1,25 +1,43 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Select, MenuItem, FormControl, InputLabel, Checkbox, FormControlLabel, Button } from '@mui/material';
-import { setFilter } from '../store/actions/app.action';
+import { useDispatch, useSelector } from 'react-redux'
+import { useState, useCallback } from 'react'
+import { TextField, Select, MenuItem, FormControl, InputLabel, Checkbox, FormControlLabel, Button } from '@mui/material'
+import { setFilter } from '../store/actions/app.action'
+import { utilService } from '../services/util.service'
 
 export function TaskFilter() {
-  const dispatch = useDispatch();
-  const filterBy = useSelector((state) => state.appModule.filterBy);
+  const dispatch = useDispatch()
+  const filterBy = useSelector((state) => state.appModule.filterBy)
+
+  const [localTitle, setLocalTitle] = useState(filterBy.title || '')
+
+  const debouncedSetFilter = useCallback(
+    utilService.debounce((newTitle) => {
+      dispatch(setFilter({ ...filterBy, title: newTitle }))
+    }, 700), 
+    [dispatch, filterBy]
+  )
+
+  const handleTitleChange = (e) => {
+    const newTitle = e.target.value
+    setLocalTitle(newTitle)
+    debouncedSetFilter(newTitle)
+  }
 
   const handleChange = (key, value) => {
-    dispatch(setFilter({ ...filterBy, [key]: value }));
-  };
+    dispatch(setFilter({ ...filterBy, [key]: value }))
+  }
 
   const handleClearFilters = () => {
-    dispatch(setFilter({ title: '', priority: '', sortBy: 'title', isAscending: true, page: 1, limit: 5 }));
+    dispatch(setFilter({ title: '', priority: '', sortBy: 'title', isAscending: true, page: 1, limit: 5 }))
+    setLocalTitle('')
   };
 
   return (
     <div>
       <TextField
         label="Filter by Title"
-        value={filterBy.title || ''}
-        onChange={(e) => handleChange('title', e.target.value)}
+        value={localTitle}
+        onChange={handleTitleChange}
         variant="outlined"
         size="small"
       />
@@ -61,7 +79,6 @@ export function TaskFilter() {
         label="Ascending"
       />
 
-      {/* Tasks per page selection */}
       <FormControl variant="outlined" size="small">
         <InputLabel>Tasks per Page</InputLabel>
         <Select
@@ -69,16 +86,11 @@ export function TaskFilter() {
           onChange={(e) => handleChange('limit', e.target.value)}
           label="Tasks per Page"
         >
-          <MenuItem value={1}>1</MenuItem>
-          <MenuItem value={2}>2</MenuItem>
-          <MenuItem value={3}>3</MenuItem>
-          <MenuItem value={4}>4</MenuItem>
-          <MenuItem value={5}>5</MenuItem>
-          <MenuItem value={6}>6</MenuItem>
-          <MenuItem value={7}>7</MenuItem>
-          <MenuItem value={8}>8</MenuItem>
-          <MenuItem value={9}>9</MenuItem>
-          <MenuItem value={10}>10</MenuItem>
+          {[...Array(10)].map((_, index) => (
+            <MenuItem key={index + 1} value={index + 1}>
+              {index + 1}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
 

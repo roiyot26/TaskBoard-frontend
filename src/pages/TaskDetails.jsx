@@ -1,7 +1,7 @@
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { getTaskById } from '../services/asyncTaskService';
+import { getTaskById } from '../services/task.service';
 import { Loader } from '../assets/svg/Loader';
 
 export function TaskDetails(){
