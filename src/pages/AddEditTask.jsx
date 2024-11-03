@@ -4,6 +4,7 @@ import { TextField, Button } from '@mui/material'
 import { getTaskById, createTask, updateTask } from '../services/task.service'
 import { Loader } from '../assets/svg/Loader'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 export function AddEditTask() {
     const { taskId } = useParams()
@@ -31,24 +32,27 @@ export function AddEditTask() {
         onSuccess: () => {
             queryClient.invalidateQueries('tasks'); // Refetch tasks list
             navigate('/'); // Navigate back to tasks list after creating
+            toast.success('Task created successfully!')
         },
         onError: (error) => {
-            console.log('error', error)
-            //toast;
+            toast.error('Error while creating task')
         },
     })
     const updateTaskMutation = useMutation({
         mutationFn:updateTask, 
         onSuccess: () => {
           queryClient.invalidateQueries(['task', taskId]); // Refetch the task details
-          queryClient.invalidateQueries('tasks'); // Update tasks list
-          navigate('/'); // Navigate back after updating
+          queryClient.invalidateQueries('tasks')
+          navigate('/')
+          toast.success('Task updated successfully!')
+        },
+        onError: (error) => {
+            toast.error('Error while updating task')
         },
       });
-///////////////////////////////// algorythem
     const handleSubmit = (e) => {
         e.preventDefault();
-        const newTask = { title, description, createdAt: Date.now(),priority:0.3 };
+        const newTask = { title, description, createdAt: Date.now()};
 
         if (taskId) {
             updateTaskMutation.mutate({ id: taskId, ...newTask });

@@ -7,6 +7,8 @@ import { TaskFilter } from "../cmp/TaskFilter";
 import { useState } from "react";
 import { useSelector } from 'react-redux';
 import { Pagination } from "../cmp/Pagination";
+import { toast } from 'react-toastify'
+import { NoResluts } from "../assets/svg/NoResluts";
 
 export function TaskBoardIndex() {
     const navigate = useNavigate();
@@ -19,9 +21,12 @@ export function TaskBoardIndex() {
         queryFn: () => getTasks({
             ...filterBy,
             page: currentPage,
-            limit: filterBy.limit || 5, // Default to 5 if limit is not set
+            limit: filterBy.limit || 5,
         }),
         staleTime: 1000 * 60 * 5,
+        onError: (error) => {
+            toast.error(`Error fetching tasks`);
+        }
     });
 
 
@@ -29,13 +34,13 @@ export function TaskBoardIndex() {
         mutationFn: deleteTask,
         onSuccess: () => {
             queryClient.invalidateQueries('tasks');
-            // Toast on success
+            toast.success('Task deleted successfully');
         },
         onError: (error) => {
-            // Toast on error
+            toast.error(`Error deleting task`);
         },
     });
-
+    
     const handleDeleteTask = (ev, taskId) => {
         ev.stopPropagation();
         deleteTaskMutation.mutate(taskId);
@@ -47,10 +52,10 @@ export function TaskBoardIndex() {
 
     if (isLoading) return <Loader />;
     if (error) return <p>Error loading tasks: {error.message}</p>;
-
+    if(!tasksData.tasks) return <NoResluts/>
     return (
         <div>
-            TaskBoardIndex
+            <h3>Task Managment Board</h3>
             <TaskFilter />
             <div>
                 <button onClick={() => navigate('/task/edit')}>Add Task</button>
@@ -61,7 +66,7 @@ export function TaskBoardIndex() {
                         currentPage={currentPage}
                         handlePageChange={handlePageChange}
                     />
-                )}            </div>
+                )} </div>
         </div>
     );
 }

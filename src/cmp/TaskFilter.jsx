@@ -31,9 +31,8 @@ export function TaskFilter() {
     dispatch(setFilter({ title: '', priority: '', sortBy: 'title', isAscending: true, page: 1, limit: 5 }))
     setLocalTitle('')
   };
-
   return (
-    <div>
+    <div className='task-filter'>
       <TextField
         label="Filter by Title"
         value={localTitle}
@@ -53,6 +52,21 @@ export function TaskFilter() {
           <MenuItem value="low">Low</MenuItem>
           <MenuItem value="medium">Medium</MenuItem>
           <MenuItem value="high">High</MenuItem>
+        </Select>
+      </FormControl>
+
+      <FormControl variant="outlined" size="small">
+        <InputLabel>Tasks per Page</InputLabel>
+        <Select
+          value={filterBy.limit || 5}
+          onChange={(e) => handleChange('limit', e.target.value)}
+          label="Tasks per Page"
+        >
+          {[...Array(10)].map((_, index) => (
+            <MenuItem key={index + 1} value={index + 1}>
+              {index + 1}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
 
@@ -78,21 +92,6 @@ export function TaskFilter() {
         }
         label="Ascending"
       />
-
-      <FormControl variant="outlined" size="small">
-        <InputLabel>Tasks per Page</InputLabel>
-        <Select
-          value={filterBy.limit || 5}
-          onChange={(e) => handleChange('limit', e.target.value)}
-          label="Tasks per Page"
-        >
-          {[...Array(10)].map((_, index) => (
-            <MenuItem key={index + 1} value={index + 1}>
-              {index + 1}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
 
       <Button variant="outlined" onClick={handleClearFilters}>
         Clear Filters
