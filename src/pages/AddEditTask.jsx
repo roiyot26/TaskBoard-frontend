@@ -45,10 +45,10 @@ export function AddEditTask() {
           navigate('/'); // Navigate back after updating
         },
       });
-
+///////////////////////////////// algorythem
     const handleSubmit = (e) => {
         e.preventDefault();
-        const newTask = { title, description, createdAt: Date.now() };
+        const newTask = { title, description, createdAt: Date.now(),priority:0.3 };
 
         if (taskId) {
             updateTaskMutation.mutate({ id: taskId, ...newTask });

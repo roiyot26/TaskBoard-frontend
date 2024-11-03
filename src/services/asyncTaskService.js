@@ -1,59 +1,24 @@
 // taskService.js
-import { mockTasks} from '../mockData'
+import { httpService } from './http.service' 
 
-let tasks = [...mockTasks]; // Clone the mock tasks for simulation
+const API_ENDPOINT = 'task'
 
-export const getTasks = async () => {
-  // Simulate an API call
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(tasks);
-    }, 500);
-  });
+export const getTasks = async (filterBy) => {
+  return await httpService.get(API_ENDPOINT, filterBy)
 };
 
-export const getTaskById = (taskId) => {
-  return new Promise((resolve, reject) => {
-      setTimeout(() => {
-          const task = mockTasks.find((task) => task.id === taskId);
-          if (task) {
-              resolve(task);
-          } else {
-              reject(new Error(`Task with ID ${taskId} not found`));
-          }
-      }, 500); // Simulate a network delay of 500ms
-  });
+export const getTaskById = async (taskId) => {
+  return await httpService.get(`${API_ENDPOINT}/${taskId}`)
 };
-
 
 export const createTask = async (newTask) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const taskWithId = { id: tasks.length + 1+'', ...newTask }; // Generate a new ID
-      tasks.push(taskWithId);
-      resolve(taskWithId);
-    }, 500);
-  });
+  return await httpService.post(API_ENDPOINT, newTask)
 };
 
-
-
 export const updateTask = async (updatedTask) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      tasks = tasks.map((task) =>
-        task.id === updatedTask.id ? updatedTask : task
-      );
-      resolve(updatedTask);
-    }, 500);
-  });
+  return await httpService.put(`${API_ENDPOINT}/${updatedTask.id}`, updatedTask)
 };
 
 export const deleteTask = async (id) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      tasks = tasks.filter((task) => task.id !== id);
-      resolve(id);
-    }, 500);
-  });
+  return await httpService.delete(`${API_ENDPOINT}/${id}`)
 };
