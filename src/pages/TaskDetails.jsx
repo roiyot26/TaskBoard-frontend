@@ -31,7 +31,6 @@ export function TaskDetails() {
                     <button onClick={() => navigate(`/`)}>{t("back")}</button>
                 </div>
             </div>
-            <SpaceSvg isNoResults={false} />
         </>
     );
 };
