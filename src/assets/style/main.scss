@@ -9,9 +9,14 @@
 @import 'basics/layout';
 
 // PAGES
+@import './pages/AddEditTask.scss';
+@import './pages/TaskDetails.scss';
+@import './pages/TaskBoardIndex.scss';
 
 // COMPONENTS
-@import './components/NoResults.scss';
+@import './components/SpaceSvg.scss';
 @import './components/TaskPreview.scss';
 @import './components/TaskList.scss';
 @import './components/TaskFilter.scss';
+@import './components/Pagination.scss';
+@import './components/header.scss';

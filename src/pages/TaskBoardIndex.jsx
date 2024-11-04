@@ -8,13 +8,16 @@ import { useState } from "react";
 import { useSelector } from 'react-redux';
 import { Pagination } from "../cmp/Pagination";
 import { toast } from 'react-toastify'
-import { NoResluts } from "../assets/svg/NoResluts";
+import { SpaceSvg } from "../assets/svg/SpaceSvg";
+import { useTranslation } from 'react-i18next'
+
 
 export function TaskBoardIndex() {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const filterBy = useSelector((state) => state.appModule.filterBy);
     const [currentPage, setCurrentPage] = useState(1);
+    const { t } = useTranslation()
 
     const { data: tasksData, isLoading, error } = useQuery({
         queryKey: ['tasks', filterBy, currentPage],
@@ -52,14 +55,12 @@ export function TaskBoardIndex() {
 
     if (isLoading) return <Loader />;
     if (error) return <p>Error loading tasks: {error.message}</p>;
-    if(!tasksData.tasks) return <NoResluts/>
+    if(!tasksData.tasks) return <SpaceSvg isNoResults={true}/>
     return (
-        <div>
-            <h3>Task Managment Board</h3>
+        <div className="task-board-index">
             <TaskFilter />
             <div>
-                <button onClick={() => navigate('/task/edit')}>Add Task</button>
-                <TaskList deleteTask={handleDeleteTask} tasks={tasksData.tasks} />
+                <button className="add-button" onClick={() => navigate('/task/edit')}>{t("addTask")}</button>
                 {tasksData.totalPages > 1 && (
                     <Pagination
                         tasksData={tasksData}
@@ -67,6 +68,7 @@ export function TaskBoardIndex() {
                         handlePageChange={handlePageChange}
                     />
                 )} </div>
+                <TaskList deleteTask={handleDeleteTask} tasks={tasksData.tasks} />
         </div>
     );
 }

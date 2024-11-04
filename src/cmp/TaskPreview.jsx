@@ -1,21 +1,11 @@
 import { useNavigate } from "react-router-dom"
+import { utilService } from "../services/util.service"
 export function TaskPreview({ task, deleteTask }) {
     const navigate = useNavigate()
 
-    function getPriorityClass(priority) {
-        if (priority >= 0 && priority <= 0.4) {
-            return 'low'
-        } else if (priority > 0.4 && priority <= 0.7) {
-            return "medium"
-        } else if (priority > 0.7 && priority <= 1) {
-            return "high"
-        } else {
-            throw new Error("Priority must be between 0 and 1");
-        }
-    }
 
     return (
-        <div className={`task-preview ${getPriorityClass(task.priority)}`} onClick={() => navigate(`/task/${task._id}`)} >
+        <div className={`task-preview ${utilService.getPriorityClass(task.priority)}`} onClick={() => navigate(`/task/${task._id}`)} >
             <li >
                 <h2>{task.title}</h2>
                 <p className="task-preview-description">{task.description}</p>

@@ -3,17 +3,18 @@ import { useState, useCallback } from 'react'
 import { TextField, Select, MenuItem, FormControl, InputLabel, Checkbox, FormControlLabel, Button } from '@mui/material'
 import { setFilter } from '../store/actions/app.action'
 import { utilService } from '../services/util.service'
+import { useTranslation } from 'react-i18next'
 
 export function TaskFilter() {
   const dispatch = useDispatch()
   const filterBy = useSelector((state) => state.appModule.filterBy)
-
+  const { t } = useTranslation()
   const [localTitle, setLocalTitle] = useState(filterBy.title || '')
 
   const debouncedSetFilter = useCallback(
     utilService.debounce((newTitle) => {
       dispatch(setFilter({ ...filterBy, title: newTitle }))
-    }, 700), 
+    }, 700),
     [dispatch, filterBy]
   )
 
@@ -34,7 +35,7 @@ export function TaskFilter() {
   return (
     <div className='task-filter'>
       <TextField
-        label="Filter by Title"
+        label={t("filterByTitle")}
         value={localTitle}
         onChange={handleTitleChange}
         variant="outlined"
@@ -42,21 +43,21 @@ export function TaskFilter() {
       />
 
       <FormControl variant="outlined" size="small">
-        <InputLabel>Priority</InputLabel>
+        <InputLabel>{t("priority")}</InputLabel>
         <Select
           value={filterBy.priority || ''}
           onChange={(e) => handleChange('priority', e.target.value)}
           label="Priority"
         >
-          <MenuItem value="">All</MenuItem>
-          <MenuItem value="low">Low</MenuItem>
-          <MenuItem value="medium">Medium</MenuItem>
-          <MenuItem value="high">High</MenuItem>
+          <MenuItem value="">{t("all")}</MenuItem>
+          <MenuItem value="low">{t("low")}</MenuItem>
+          <MenuItem value="medium">{t("medium")}</MenuItem>
+          <MenuItem value="high">{t("high")}</MenuItem>
         </Select>
       </FormControl>
 
       <FormControl variant="outlined" size="small">
-        <InputLabel>Tasks per Page</InputLabel>
+        <InputLabel>{t("taskPerPage")}</InputLabel>
         <Select
           value={filterBy.limit || 5}
           onChange={(e) => handleChange('limit', e.target.value)}
@@ -71,15 +72,15 @@ export function TaskFilter() {
       </FormControl>
 
       <FormControl variant="outlined" size="small">
-        <InputLabel>Sort by</InputLabel>
+        <InputLabel>{t("sortBy")}</InputLabel>
         <Select
           value={filterBy.sortBy || 'title'}
           onChange={(e) => handleChange('sortBy', e.target.value)}
           label="Sort by"
         >
-          <MenuItem value="title">Title</MenuItem>
-          <MenuItem value="createdAt">Creation Date</MenuItem>
-          <MenuItem value="priority">Priority</MenuItem>
+          <MenuItem value="title">{t("title")}</MenuItem>
+          <MenuItem value="createdAt">{t("createdAt")}</MenuItem>
+          <MenuItem value="priority">{t("priority")}</MenuItem>
         </Select>
       </FormControl>
 
@@ -90,11 +91,11 @@ export function TaskFilter() {
             onChange={(e) => handleChange('isAscending', e.target.checked)}
           />
         }
-        label="Ascending"
+        label={t("ascending")}
       />
 
       <Button variant="outlined" onClick={handleClearFilters}>
-        Clear Filters
+        {t("clearFilters")}
       </Button>
     </div>
   );

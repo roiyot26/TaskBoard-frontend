@@ -1,18 +1,10 @@
+
 .task-list {
     padding: 1rem;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1.5rem;
 
-    ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    // Adjust grid layout for different screen sizes
     @media (max-width: 768px) {
         grid-template-columns: 1fr;
     }
