@@ -27,7 +27,7 @@ export function TaskBoardIndex() {
             limit: filterBy.limit || 5,
         }),
         staleTime: 1000 * 60 * 5,
-        onError: (error) => {
+        onError: () => {
             toast.error(`Error fetching tasks`);
         }
     });
@@ -58,7 +58,7 @@ export function TaskBoardIndex() {
     if(!tasksData.tasks) return <SpaceSvg isNoResults={true}/>
     return (
         <div className="task-board-index">
-            <TaskFilter />
+            {/* <TaskFilter /> */}
             <div>
                 <button className="add-button" onClick={() => navigate('/task/edit')}>{t("addTask")}</button>
                 {tasksData.totalPages > 1 && (

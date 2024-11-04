@@ -16,7 +16,6 @@ export function appReducer(state = initialState, action = {}) {
   switch (action.type) {
     case SET_FILTER_BY:
       return { ...state, filterBy: { ...state.filterBy, ...action.filterBy } };
-
     default:
       return state;
   }

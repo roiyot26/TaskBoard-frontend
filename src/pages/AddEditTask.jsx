@@ -1,17 +1,18 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { Button, TextField } from '@mui/material'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { TextField, Button } from '@mui/material'
-import { getTaskById, createTask, updateTask } from '../services/task.service'
-import { Loader } from '../assets/svg/Loader'
 import { useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
+import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { Loader } from '../assets/svg/Loader'
+import { createTask, getTaskById, updateTask } from '../services/task.service'
 
 export function AddEditTask() {
     const { taskId } = useParams()
     const navigate = useNavigate()
     const queryClient = useQueryClient()
-    const {t} = useTranslation()
+    const { t } = useTranslation()
+    const [isEditMode,setIsEditMode] = useState(!!taskId)
 
     const { data: task, isLoading, error } = useQuery({
         queryKey: ['task', taskId],
@@ -28,6 +29,8 @@ export function AddEditTask() {
             setDescription(task.description);
         }
     }, [task])
+
+    
 
     const createTaskMutation = useMutation({
         mutationFn: createTask,
@@ -71,7 +74,7 @@ export function AddEditTask() {
         <>
             <div className='add-edit-task'>
                 <form onSubmit={handleSubmit}>
-                    <h1>{taskId ? t("edit" ) : t("addTask")}</h1>
+                    <h1>{taskId ? t("edit") : t("addTask")}</h1>
 
                     <TextField
                         label={t("title")}
@@ -94,7 +97,7 @@ export function AddEditTask() {
                     <Button type="submit" variant="contained" color="primary">
                         {taskId ? t("updateTask") : t("addTask")}
                     </Button>
-                    <Button onClick={() => navigate(`/task/${taskId}`)} variant="contained" color="primary">{t("back")}</Button>
+                    {isEditMode && <Button onClick={() => navigate(`/task/${taskId}`)} variant="contained" color="primary">{t("back")}</Button>}
                     <Button onClick={() => navigate(`/`)} variant="contained" color="primary">{t("backToTasks")}</Button>
                 </form>
             </div>
