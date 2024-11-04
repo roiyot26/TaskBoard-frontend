@@ -19,7 +19,6 @@ export function TaskDetails() {
 
     if (isLoading) return <Loader />;
     if (error) return <p>Error loading task: {error.message}</p>;
-    if (!task) return <SpaceSvg isNoResults={true} />
     return (
         <>
             <div className={`task-details ${utilService.getPriorityClass(task.priority)}`}>

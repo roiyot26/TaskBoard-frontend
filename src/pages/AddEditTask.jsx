@@ -35,8 +35,8 @@ export function AddEditTask() {
     const createTaskMutation = useMutation({
         mutationFn: createTask,
         onSuccess: () => {
-            queryClient.invalidateQueries('tasks'); // Refetch tasks list
-            navigate('/'); // Navigate back to tasks list after creating
+            queryClient.invalidateQueries('tasks'); 
+            navigate('/'); 
             toast.success('Task created successfully!')
         },
         onError: (error) => {
@@ -46,7 +46,7 @@ export function AddEditTask() {
     const updateTaskMutation = useMutation({
         mutationFn: updateTask,
         onSuccess: () => {
-            queryClient.invalidateQueries(['task', taskId]); // Refetch the task details
+            queryClient.invalidateQueries(['task', taskId]); 
             queryClient.invalidateQueries('tasks')
             navigate('/')
             toast.success('Task updated successfully!')

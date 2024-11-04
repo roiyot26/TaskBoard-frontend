@@ -3,7 +3,6 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getTasks, deleteTask } from '../services/task.service';
 import { useNavigate } from "react-router-dom";
 import { Loader } from "../assets/svg/Loader";
-import { TaskFilter } from "../cmp/TaskFilter";
 import { useState } from "react";
 import { useSelector } from 'react-redux';
 import { Pagination } from "../cmp/Pagination";
@@ -43,7 +42,7 @@ export function TaskBoardIndex() {
             toast.error(`Error deleting task`);
         },
     });
-    
+
     const handleDeleteTask = (ev, taskId) => {
         ev.stopPropagation();
         deleteTaskMutation.mutate(taskId);
@@ -52,13 +51,11 @@ export function TaskBoardIndex() {
     const handlePageChange = (newPage) => {
         setCurrentPage(newPage);
     };
-
     if (isLoading) return <Loader />;
     if (error) return <p>Error loading tasks: {error.message}</p>;
-    if(!tasksData.tasks) return <SpaceSvg isNoResults={true}/>
+    if (tasksData.tasks.length === 0) return <SpaceSvg isNoResults={true} />
     return (
         <div className="task-board-index">
-            {/* <TaskFilter /> */}
             <div>
                 <button className="add-button" onClick={() => navigate('/task/edit')}>{t("addTask")}</button>
                 {tasksData.totalPages > 1 && (
@@ -68,7 +65,7 @@ export function TaskBoardIndex() {
                         handlePageChange={handlePageChange}
                     />
                 )} </div>
-                <TaskList deleteTask={handleDeleteTask} tasks={tasksData.tasks} />
+            <TaskList deleteTask={handleDeleteTask} tasks={tasksData.tasks} />
         </div>
     );
 }
